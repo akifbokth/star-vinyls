@@ -71,6 +71,13 @@ router.get('/:id', async (req, res, next) => {
             return res.status(404).send('Product not found');
         }
 
+        // Fetch additional details from Deezer API
+        const albumTitle = product[0].title;
+        const deezerResponse = await axios.get(`https://api.deezer.com/search?q=album:"${albumTitle}"`);
+        const deezerData = deezerResponse.data;
+
+        res.render('product.ejs', { product: product[0], deezerData });
+
         const [reviews] = await db.execute(
             'SELECT r.*, u.username FROM reviews r JOIN users u ON r.user_id = u.id WHERE r.product_id = ?',
             [productId]

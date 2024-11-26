@@ -14,6 +14,7 @@
         </a>
         <h1><%= product.title %></h1>
     </header>
+    
     <main class="product-detail">
         <section class="product-info">
             <img src="<%= product.image_url || 'public/default.jpg' %>" alt="<%= product.title %>">
@@ -25,6 +26,7 @@
                 <p><strong>Description:</strong> <%= product.description %></p>
             </div>
         </section>
+
         <section class="reviews">
             <h2>Reviews</h2>
             <% if (reviews.length === 0) { %>
@@ -40,6 +42,22 @@
                 </ul>
             <% } %>
         </section>
+
+        <section class="deezer-data">
+            <h2>Top Tracks from Deezer</h2>
+            <% if (deezerData && deezerData.data.length > 0) { %>
+                <ul>
+                    <% deezerData.data.slice(0, 5).forEach(track => { %>
+                        <li>
+                            <a href="<%= track.link %>" target="_blank"><%= track.title %></a> by <%= track.artist.name %>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No additional information available.</p>
+            <% } %>
+        </section>
+        
 
         <% if (username) { %>
             <section class="add-review">
