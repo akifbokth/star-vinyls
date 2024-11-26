@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Products - Star Vinyls</title>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="home-icon">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <h1>Search for a Product</h1>
+    </header>
+    <main class="search-container">
+        <form action="/products/search" method="GET" class="search-form">
+            <input
+                type="text"
+                name="search_text"
+                placeholder="Search by title or artist..."
+                value="<%= query || '' %>"
+                required
+            />
+            <button type="submit">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </form>
+
+        <% if (availableProducts.length === 0) { %>
+            <p class="no-results">No products found. Try another search!</p>
+        <% } else { %>
+            <div class="product-grid">
+                <% availableProducts.forEach(product => { %>
+                    <div class="product-card">
+                        <img
+                            src="<%= product.image_url || '/default-placeholder.png' %>"
+                            alt="<%= product.title %>"
+                        />
+                        <h2><%= product.title %></h2>
+                        <p><strong>Artist:</strong> <%= product.artist %></p>
+                        <p><strong>Price:</strong> $<%= product.price %></p>
+                        <a href="/products/<%= product.id %>" class="button">
+                            View Details
+                        </a>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </main>
+</body>
+</html>

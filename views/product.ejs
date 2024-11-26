@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product.title %></title>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="home-icon">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <h1><%= product.title %></h1>
+    </header>
+    <main class="product-detail">
+        <section class="product-info">
+            <img src="<%= product.image_url || 'public/default.jpg' %>" alt="<%= product.title %>">
+            <div class="product-details">
+                <p><strong>Title:</strong> <%= product.title %></p>
+                <p><strong>Artist:</strong> <%= product.artist %></p>
+                <p><strong>Genre:</strong> <%= product.genre %></p>
+                <p><strong>Price:</strong> £<%= product.price %></p>
+                <p><strong>Description:</strong> <%= product.description %></p>
+            </div>
+        </section>
+        <section class="reviews">
+            <h2>Reviews</h2>
+            <% if (reviews.length === 0) { %>
+                <p>No reviews yet. Be the first to review!</p>
+            <% } else { %>
+                <ul>
+                    <% reviews.forEach(review => { %>
+                        <li>
+                            <p><strong><%= review.username %>:</strong> <%= review.comment %></p>
+                            <p>Rating: <%= review.rating %>/5</p>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } %>
+        </section>
+
+        <% if (username) { %>
+            <section class="add-review">
+                <h2>Add a Review</h2>
+                <form action="/products/<%= product.id %>/reviews" method="POST">
+                    <textarea name="reviewText" placeholder="Write your review..." required></textarea>
+                    <label for="rating">Rating:</label>
+                    <select name="rating" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <button type="submit">Submit</button>
+                </form>
+            </section>
+        <% } else { %>
+            <p>You must <a href="/users/login">log in</a> to add a review.</p>
+        <% } %>
+    </main>
+</body>
+</html>

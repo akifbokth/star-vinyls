@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+    <title>Welcome to <%= shopData.shopName %></title>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+      <h1>Welcome to <%= shopData.shopName %></h1>
+      <nav>
+        <% if (username) { %>
+          <span style="float: right;">Logged in as: <strong><%= username %></strong></span>
+          <p style="float: right; margin-right: 10px;"><a href="users/logout">Logout</a></p>
+        <% } else { %>
+          <p style="float: right;"><a href="users/login">Login</a></p>
+          <p style="float: right; margin-right: 10px;"><a href="users/register">Register</a></p>
+        <% } %>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h2>Explore the Best Vinyls</h2>
+        <p>Your one-stop shop for classic and modern vinyl records.</p>
+        <a href="/products/list" class="button">Start Browsing</a>
+      </div>
+    </section>
+
+    <main class="menu-grid">
+      <a href="about" class="menu-button">
+        <i class="fas fa-info-circle"></i>
+        <span>About Star Vinyls</span>
+      </a>
+      <a href="products/search" class="menu-button">
+        <i class="fas fa-search"></i>
+        <span>Search for a Product</span>
+      </a>
+      <% if (isAdmin) { %>
+        <a href="products/add" class="menu-button">
+          <i class="fas fa-plus-circle"></i>
+          <span>Add a New Product</span>
+        </a>
+        <a href="users/list" class="menu-button">
+          <i class="fas fa-users"></i>
+          <span>List Users</span>
+        </a>
+      <% } %>
+      <a href="products/list" class="menu-button">
+        <i class="fas fa-list"></i>
+        <span>List Products</span>
+      </a>
+      <a href="products/deals" class="menu-button">
+        <i class="fas fa-tags"></i>
+        <span>Deals and Discounts</span>
+      </a>
+    </main>
+</body>
+</html>

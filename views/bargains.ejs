@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head>
+    <title>Welcome to <%=shopData.shopName%></title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+</head>
+<body>
+    <h1><%=shopData.shopName%> Shop</h1>
+    <h2>Products Under £20!:</h2>
+    <ul>
+      <% availableProducts.forEach(function(product) { %>
+        <li><%= product.title %>, £<%=product.price%> </li>
+      <% }) %>
+    </ul>
+</body>
+</html>

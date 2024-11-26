@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - <%= shopData.shopName %></title>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="home-icon">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <h1>Add Product to <%= shopData.shopName %></h1>
+    </header>
+    <main class="form-container">
+        <form method="POST" action="/productadded" class="add-product-form">
+            <h2>Add a New Product</h2>
+            <div class="form-group">
+                <label for="title">Record Title</label>
+                <input id="title" type="text" name="title" placeholder="Enter record title" required>
+            </div>
+            <div class="form-group">
+                <label for="artist">Artist(s)</label>
+                <input id="artist" type="text" name="artist" placeholder="Enter artist(s)" required>
+            </div>
+            <div class="form-group">
+                <label for="genre">Genre</label>
+                <input id="genre" type="text" name="genre" placeholder="Enter genre" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input id="description" type="text" name="description" placeholder="Enter description" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price (£)</label>
+                <input id="price" type="text" name="price" placeholder="e.g., 15.99" required>
+            </div>
+            <div class="form-group">
+                <label for="image_url">Cover Art (URL)</label>
+                <input id="image_url" type="text" name="image_url" placeholder="Enter image URL" required>
+            </div>
+            <button type="submit" class="submit-button">
+                <i class="fas fa-plus-circle"></i> Add Product
+            </button>
+        </form>
+    </main>
+</body>
+</html>

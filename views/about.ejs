@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Star Vinyls</title>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <% if (req.url !== '/') { %>
+    <a href="/" class="home-icon">
+        <i class="fas fa-home"></i> Home
+    </a>
+    <% } %>
+    <header>
+        <h1>About <%= shopData.shopName %></h1>
+    </header>
+    <main class="about-container">
+        <section class="about-intro">
+            <h2>Who We Are</h2>
+            <p>
+                Welcome to <strong>Star Vinyls</strong>, your premier destination for discovering and purchasing the finest vinyl records.
+                Our mission is to bring music enthusiasts closer to the timeless magic of vinyl, offering a curated selection of classic, 
+                modern, and rare records to enrich your listening experience.
+            </p>
+        </section>
+
+        <section class="about-mission">
+            <h2>Our Mission</h2>
+            <p>
+                We believe in the power of music to connect people and create lasting memories. At Star Vinyls, 
+                we strive to deliver high-quality records while fostering a passionate community of music lovers.
+                Whether you're a seasoned collector or just starting your journey, we're here to guide you every step of the way.
+            </p>
+        </section>
+
+        <section class="about-values">
+            <h2>What We Offer</h2>
+            <ul>
+                <li>Extensive collection of vinyl records across genres.</li>
+                <li>Expert recommendations to help you find your next favorite album.</li>
+                <li>A platform for sharing reviews and connecting with other music enthusiasts.</li>
+                <li>Exclusive deals and discounts for our loyal customers.</li>
+            </ul>
+        </section>
+
+        <section class="about-contact">
+            <h2>Get in Touch</h2>
+            <p>
+                Have questions or need assistance? Reach out to us at support@starvinyls.com</a>. 
+                We’d love to hear from you!
+            </p>
+        </section>
+    </main>
+</body>
+</html>
