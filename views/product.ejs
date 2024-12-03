@@ -29,22 +29,24 @@
         </section>
 
         <!-- Tracklist Section -->
-        <section class="itunes-tracklist">
+        <section class="tracklist">
             <h2>Tracklist</h2>
-            <% if (tracklist && tracklist.length === 0) { %>
+            <% if (tracklist.length === 0) { %>
                 <p>No tracklist available for this album.</p>
             <% } else { %>
-                <div class="itunes-grid">
+                <div class="tracklist-grid">
                     <% tracklist.forEach(track => { %>
-                        <div class="itunes-item">
+                        <div class="tracklist-item">
                             <img src="<%= track.artworkUrl100 %>" alt="<%= track.trackName %>">
                             <p><strong><%= track.trackName %></strong></p>
-                            <p>Duration: <%= Math.floor(track.trackTimeMillis / 60000) %>:<%= String(Math.floor((track.trackTimeMillis % 60000) / 1000)).padStart(2, '0') %></p>
+                            <p class="duration">
+                                Duration: <%= Math.floor(track.trackTimeMillis / 60000) %>:<%= String(Math.floor((track.trackTimeMillis % 60000) / 1000)).padStart(2, '0') %>
+                            </p>
                         </div>
                     <% }) %>
                 </div>
             <% } %>
-        </section>
+        </section>        
 
         <!-- Reviews Section -->
         <section class="reviews">

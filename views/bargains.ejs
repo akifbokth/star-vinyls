@@ -1,16 +1,37 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Welcome to <%=shopData.shopName%></title>
-    <link rel="stylesheet"  type="text/css" href="/main.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bargains - <%= shopData.shopName %></title>
+    <link rel="stylesheet" type="text/css" href="/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <h1><%=shopData.shopName%> Shop</h1>
-    <h2>Products Under £20!:</h2>
-    <ul>
-      <% availableProducts.forEach(function(product) { %>
-        <li><%= product.title %>, £<%=product.price%> </li>
-      <% }) %>
-    </ul>
+    <header>
+        <a href="/" class="home-icon">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <h1><%= shopData.shopName %> - Bargains</h1>
+    </header>
+    <main>
+        <section class="bargains-section">
+            <h2>Products Under £20</h2>
+            <% if (availableProducts.length === 0) { %>
+                <p>No products available under £20 at the moment.</p>
+            <% } else { %>
+                <div class="product-grid">
+                    <% availableProducts.forEach(product => { %>
+                        <div class="product-card">
+                            <img src="<%= product.image_url || 'public/default.jpg' %>" alt="<%= product.title %>">
+                            <h2><%= product.title %></h2>
+                            <p><strong>Price:</strong> £<%= product.price %></p>
+                            <a href="/products/<%= product.id %>" class="button">View Details</a>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </section>
+    </main>
 </body>
 </html>

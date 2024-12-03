@@ -61,69 +61,50 @@ router.get('/deals', async (req, res, next) => {
     }
 });
 
-// Route to fetch a product by ID, reviews, and related iTunes data
+// Route to fetch a product by ID, show reviews, and related iTunes data
 router.get('/:id', async (req, res, next) => {
     const productId = req.params.id;
 
     try {
-        // Fetch product details
+        // Fetch product from the database
         const [product] = await db.execute('SELECT * FROM products WHERE id = ?', [productId]);
 
         if (product.length === 0) {
             return res.status(404).send('Product not found');
         }
 
-        const albumTitle = product[0].title;
-        let itunesData = null;
-        let tracklist = [];
-        let reviews = [];
-
-        // Fetch album details from the iTunes API
-        const itunesResponse = await axios.get(`https://itunes.apple.com/search`, {
-            params: {
-                term: albumTitle,
-                entity: 'album',
-                limit: 1,
-            },
-        });
-
-        if (itunesResponse.data.results.length > 0) {
-            const album = itunesResponse.data.results[0];
-            const collectionId = album.collectionId;
-
-            // Fetch tracklist for the album using the collectionId
-            const tracklistResponse = await axios.get(`https://itunes.apple.com/lookup`, {
-                params: { id: collectionId, entity: 'song' },
-            });
-
-            if (tracklistResponse.data.results.length > 1) {
-                // Remove the first entry (album info) and keep only the tracks
-                tracklist = tracklistResponse.data.results.slice(1);
-            }
-
-            itunesData = album;
-        }
+        const productData = product[0];
 
         // Fetch reviews for the product
-        const [fetchedReviews] = await db.execute(
+        const [reviews] = await db.execute(
             'SELECT r.*, u.username FROM reviews r JOIN users u ON r.user_id = u.id WHERE r.product_id = ?',
             [productId]
         );
-        reviews = fetchedReviews;
 
+        // Query the iTunes API using both the title and artist
+        const searchQuery = encodeURIComponent(`${productData.title} ${productData.artist}`);
+        const itunesApiUrl = `https://itunes.apple.com/search?term=${searchQuery}&media=music&entity=song&limit=20`;
+
+        const itunesResponse = await axios.get(itunesApiUrl);
+        const itunesData = itunesResponse.data.results;
+
+        // Filter tracks that match the album name exactly (if needed)
+        const tracklist = itunesData.filter(track =>
+            track.collectionName?.toLowerCase() === productData.title.toLowerCase() &&
+            track.artistName?.toLowerCase() === productData.artist.toLowerCase()
+        );
+
+        // Render the product page
         res.render('product.ejs', {
-            product: product[0],
-            itunesData, // Album-level metadata
-            tracklist,  // Tracks for the album
-            reviews,    // User reviews
+            product: productData,
+            reviews: reviews,
+            tracklist: tracklist,
         });
+
     } catch (err) {
         next(err);
     }
 });
-
-
-
 
 // Route to handle adding a review
 router.post('/:id/reviews', async (req, res, next) => {
