@@ -34,7 +34,7 @@ router.get('/list', async (req, res, next) => {
 
 // Admin-only route to render the add product form
 router.get('/add', isAdmin, (req, res) => {
-    res.render('addProduct.ejs');
+    res.render('addproducts.ejs');
 });
 
 // Admin-only route to handle adding a product
