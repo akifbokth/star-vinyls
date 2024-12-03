@@ -16,6 +16,7 @@
     </header>
     
     <main class="product-detail">
+        <!-- Product Info Section -->
         <section class="product-info">
             <img src="<%= product.image_url || 'public/default.jpg' %>" alt="<%= product.title %>">
             <div class="product-details">
@@ -27,9 +28,28 @@
             </div>
         </section>
 
+        <!-- Tracklist Section -->
+        <section class="itunes-tracklist">
+            <h2>Tracklist</h2>
+            <% if (tracklist && tracklist.length === 0) { %>
+                <p>No tracklist available for this album.</p>
+            <% } else { %>
+                <div class="itunes-grid">
+                    <% tracklist.forEach(track => { %>
+                        <div class="itunes-item">
+                            <img src="<%= track.artworkUrl100 %>" alt="<%= track.trackName %>">
+                            <p><strong><%= track.trackName %></strong></p>
+                            <p>Duration: <%= Math.floor(track.trackTimeMillis / 60000) %>:<%= String(Math.floor((track.trackTimeMillis % 60000) / 1000)).padStart(2, '0') %></p>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </section>
+
+        <!-- Reviews Section -->
         <section class="reviews">
             <h2>Reviews</h2>
-            <% if (reviews.length === 0) { %>
+            <% if (reviews && reviews.length === 0) { %>
                 <p>No reviews yet. Be the first to review!</p>
             <% } else { %>
                 <ul>
@@ -43,22 +63,7 @@
             <% } %>
         </section>
 
-        <section class="deezer-data">
-            <h2>Top Tracks from Deezer</h2>
-            <% if (deezerData && deezerData.data.length > 0) { %>
-                <ul>
-                    <% deezerData.data.slice(0, 5).forEach(track => { %>
-                        <li>
-                            <a href="<%= track.link %>" target="_blank"><%= track.title %></a> by <%= track.artist.name %>
-                        </li>
-                    <% }) %>
-                </ul>
-            <% } else { %>
-                <p>No additional information available.</p>
-            <% } %>
-        </section>
-        
-
+        <!-- Add Review Section -->
         <% if (username) { %>
             <section class="add-review">
                 <h2>Add a Review</h2>

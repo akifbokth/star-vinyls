@@ -1,5 +1,3 @@
-# Insert data into the tables
-
 USE star_vinyls;
 
 INSERT INTO products (title, artist, genre, price, description, image_url)
@@ -14,7 +12,7 @@ VALUES
     'Album from Michael Jackson', 'https://imagescdn.juno.co.uk/300/CS605176-01A-MED.jpg'),
 
     ('After Hours', 'The Weeknd', 'Pop', 34.99, 
-    'Album from The Weeknd', 'https://imagescdn.juno.co.uk/full/CS790049-01A-MED.jpg'),
+    'Album from The Weeknd', 'https://imagescdn.juno.co.uk/300/CS790049-01A-MED.jpg'),
 
     ('Back in Black', 'AC/DC', 'Hard Rock', 20.99, 
     'Album from AC/DC', 'https://imagescdn.juno.co.uk/300/CS303522-01A-MED.jpg'),

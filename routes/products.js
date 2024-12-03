@@ -61,34 +61,69 @@ router.get('/deals', async (req, res, next) => {
     }
 });
 
-// Route to fetch a product by ID and its reviews
+// Route to fetch a product by ID, reviews, and related iTunes data
 router.get('/:id', async (req, res, next) => {
     const productId = req.params.id;
 
     try {
+        // Fetch product details
         const [product] = await db.execute('SELECT * FROM products WHERE id = ?', [productId]);
 
         if (product.length === 0) {
             return res.status(404).send('Product not found');
         }
 
-        // Fetch additional details from Deezer API
         const albumTitle = product[0].title;
-        const deezerResponse = await axios.get(`https://api.deezer.com/search?q=album:"${albumTitle}"`);
-        const deezerData = deezerResponse.data;
+        let itunesData = null;
+        let tracklist = [];
+        let reviews = [];
 
-        res.render('product.ejs', { product: product[0], deezerData });
+        // Fetch album details from the iTunes API
+        const itunesResponse = await axios.get(`https://itunes.apple.com/search`, {
+            params: {
+                term: albumTitle,
+                entity: 'album',
+                limit: 1,
+            },
+        });
 
-        const [reviews] = await db.execute(
+        if (itunesResponse.data.results.length > 0) {
+            const album = itunesResponse.data.results[0];
+            const collectionId = album.collectionId;
+
+            // Fetch tracklist for the album using the collectionId
+            const tracklistResponse = await axios.get(`https://itunes.apple.com/lookup`, {
+                params: { id: collectionId, entity: 'song' },
+            });
+
+            if (tracklistResponse.data.results.length > 1) {
+                // Remove the first entry (album info) and keep only the tracks
+                tracklist = tracklistResponse.data.results.slice(1);
+            }
+
+            itunesData = album;
+        }
+
+        // Fetch reviews for the product
+        const [fetchedReviews] = await db.execute(
             'SELECT r.*, u.username FROM reviews r JOIN users u ON r.user_id = u.id WHERE r.product_id = ?',
             [productId]
         );
+        reviews = fetchedReviews;
 
-        res.render('product.ejs', { product: product[0], reviews });
+        res.render('product.ejs', {
+            product: product[0],
+            itunesData, // Album-level metadata
+            tracklist,  // Tracks for the album
+            reviews,    // User reviews
+        });
     } catch (err) {
         next(err);
     }
 });
+
+
+
 
 // Route to handle adding a review
 router.post('/:id/reviews', async (req, res, next) => {
