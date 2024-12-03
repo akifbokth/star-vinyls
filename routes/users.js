@@ -31,7 +31,7 @@ router.get('/list', isAdmin, async (req, res, next) => {
 
 // Route to render registration form
 router.get('/register', (req, res) => {
-    res.render('register.ejs');
+    res.render('register.ejs', { errors: [], username: '', email: '' });
 });
 
 // Route to handle user registration
@@ -42,26 +42,28 @@ router.post(
         check('email').isEmail().withMessage('A valid email is required'),
         check('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
     ],
-    (req, res, next) => {
+    async (req, res, next) => {
         const errors = validationResult(req);
+        const { username, email } = req.body;
+
         if (!errors.isEmpty()) {
-            return res.status(400).render('register.ejs', { errors: errors.array() });
+            return res.status(400).render('register.ejs', {
+                errors: errors.array(),
+                username: username || '',
+                email: email || '',
+            });
         }
 
-        const { username, email, password } = req.body;
-
-        // Hash the password
-        bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
-            if (err) return next(err);
-
+        try {
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
             const sqlquery = 'INSERT INTO users (username, email, hashedPassword) VALUES (?, ?, ?)';
-            const newUser = [username, email, hashedPassword];
+            await db.execute(sqlquery, [username, email, hashedPassword]);
 
-            db.query(sqlquery, newUser, (error) => {
-                if (error) return next(error);
-                res.send(`Hello ${username}, you have successfully registered.`);
-            });
-        });
+            // Render success page with username
+            res.render('registerSuccess.ejs', { username });
+        } catch (err) {
+            next(err);
+        }
     }
 );
 
