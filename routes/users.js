@@ -13,7 +13,7 @@ const saltRounds = 10;
 // Middleware to check if the user is logged in
 const redirectLogin = (req, res, next) => {
     if (!req.session.userId) {
-        return res.redirect('./login'); // Redirect to the login page
+        return res.redirect('../login'); // Redirect to the login page
     }
     next(); // Move to the next middleware
 };
