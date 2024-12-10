@@ -93,7 +93,7 @@ router.post('/loggedin', async (req, res, next) => {
         if (match) {
             req.session.userId = user.id; // Set the session userId
             req.session.username = username; // Set the session username for display
-            return res.redirect('/'); // Redirect to the home page
+            return res.redirect('../'); // Redirect to the home page
         } else {
             return res.send('Incorrect password!'); // Respond for incorrect password
         }
